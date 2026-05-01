@@ -30,7 +30,7 @@ app.get("/", (req: Request, res: Response) => {
     res.status(200).send("<h1>Expense Api is working...</h1>");
 });
 
-app.use('/users', userRouter);
+app.use('/api/users', userRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({
