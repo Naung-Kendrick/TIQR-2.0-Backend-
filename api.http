@@ -1,0 +1,225 @@
+
+# @baseUrl = https://expense-api-3zp1.onrender.com
+@baseUrl = http://localhost:3000
+@token = 
+
+// Main
+GET {{baseUrl}}
+
+###
+
+// Register
+POST {{baseUrl}}/users/register
+content-type: application/json
+
+{
+    "name": "user2",
+    "email": "user2@gmail.com",
+    "password": "123456",
+    "phone": "092345678"
+}
+
+###
+
+// Login
+POST {{baseUrl}}/users/login
+content-type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "123456"
+}
+
+###
+
+// Get Current User Info
+GET {{baseUrl}}/users/me
+Authorization: Bearer {{token}}
+
+###
+
+// Get All Users
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+###
+
+// Get User By Id
+GET {{baseUrl}}/users/699d188a73d3c379b6e9cb3b
+Authorization: Bearer {{token}}
+
+###
+
+// Update User Info
+PATCH  {{baseUrl}}/users
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Admin Updated",
+    "email": "",
+    "phone": "0911111111",
+    "active": true
+}
+
+###
+
+// Update User Password
+PATCH  {{baseUrl}}/users/update-pwd
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "oldPassword": "1234567",
+    "newPassword": "123456"
+}
+
+###
+
+// Update User Role by admin
+PATCH  {{baseUrl}}/users/update-role
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "userId": "699c02b3f2be26b238a32868",
+    "role": 1
+}
+
+###
+
+// Update User Password by admin
+PATCH  {{baseUrl}}/users/update-pwd-admin
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "userId": "699c02b3f2be26b238a32868",
+    "newPassword": "123456"
+}
+
+###
+
+// Delete user by admin
+DELETE  {{baseUrl}}/users/699d188a73d3c379b6e9cb3b
+Authorization: Bearer {{token}}
+
+###
+
+// Update avatar
+PATCH {{baseUrl}}/users/update-avatar
+Content-Type: multipart/form-data; boundary=IamSplitter
+Authorization: Bearer {{token}}
+
+--IamSplitter
+Content-Disposition: form-data; name="file"; filename="go.jpg"
+Content-Type: image/jpeg
+
+< /Users/nano/Pictures/go.jpg
+--IamSplitter--
+
+###
+
+// Get All Categories
+GET {{baseUrl}}/categories
+Authorization: Bearer {{token}}
+
+###
+
+// Create Category
+POST {{baseUrl}}/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Income 4",
+    "description": "bla bla bla",
+    "type": "INCOME"
+}
+
+###
+
+// Update Category
+PATCH {{baseUrl}}/categories/699d2ea8b2eabe36bbb4e61b
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Income 4 updated",
+    "description": "bla bla bla"
+}
+
+###
+
+// Delete category
+DELETE  {{baseUrl}}/categories/699d2ea8b2eabe36bbb4e61b
+Authorization: Bearer {{token}}
+
+###
+
+// Create Expense
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "description": "Salary 3",
+    "remark": "",
+    "qty": 1,
+    "unit": "month",
+    "amount": 60000,
+    "categoryId": "699c179090f2e7897aaaa8ab",
+    "date": "2026-02-22"
+}
+
+###
+
+// Update Expense
+PATCH {{baseUrl}}/expenses/699e649e897e2249266bdd04
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "description": "Food 1",
+    "remark": "bla bla",
+    "qty": 2,
+    "unit": "test",
+    "amount": 2500,
+    "date": "2026-02-25"
+}
+
+###
+
+// Get all expenses
+GET {{baseUrl}}/expenses?page=1&limit=5&type=INCOME&filterBy=month&month=2026-02
+Authorization: Bearer {{token}}
+
+###
+
+// Delete expense
+DELETE {{baseUrl}}/expenses/699e6bda1862f50488631452
+Authorization: Bearer {{token}}
+
+###
+
+// Send Messages
+POST {{baseUrl}}/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "receiverId": "699e732a7dc552c67d461300",
+    "message": "Hello User2"
+}
+
+###
+
+// Get Messages
+GET {{baseUrl}}/messages/699e732a7dc552c67d461300
+Authorization: Bearer {{token}}
+
+###
+
+// Delete Message
+DELETE {{baseUrl}}/messages/699fcd30f46a5f76ea32470c
+Authorization: Bearer {{token}}
