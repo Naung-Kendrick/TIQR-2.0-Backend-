@@ -34,7 +34,7 @@ const userSchema = new Schema<IUser, TUserModel, IUserMethods>({
     },
     township: {
         type: String,
-        enum: ["Namhsan", "Namkham", "Manton", "Namtu", "Border", "Mongwee"],
+        enum: ["Namhsan Team", "Namkham Team", "Manton Team", "Namtu Team", "Namkham Border Team", "Mongwee Team", "Mongbow Team", "MongNgaw Team", "Kutkai Team"],
     },
     password: {
         type: String,
