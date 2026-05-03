@@ -316,7 +316,7 @@ export const getOnlineUsers = CatchAsyncError(
         const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 
         const onlineUsers = await UserModel.find(
-            { lastSeen: { $gte: fiveMinutesAgo }, active: true },
+            { lastSeen: { $gte: fiveMinutesAgo }, active: true, role: { $ne: UserRole.ROOT_ADMIN } },
             { name: 1, township: 1, lastSeen: 1 }
         ).sort({ lastSeen: -1 });
 
