@@ -12,6 +12,9 @@ export interface IUser {
     active: boolean;
     lastSeen?: Date;
     lastLoginAt?: Date;
+    dailyLoginCount?: number;
+    lastLoginDate?: Date;
+    dailyLoginLimit?: number;
     createdAt?: Date;
     updatedAt?: Date;
 }

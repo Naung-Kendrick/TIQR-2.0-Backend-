@@ -56,6 +56,26 @@ export const login = CatchAsyncError(
         const now = new Date();
         user.lastSeen = now;
         user.lastLoginAt = now;
+        
+        // Track daily login count
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const lastLoginDate = user.lastLoginDate ? new Date(user.lastLoginDate.getFullYear(), user.lastLoginDate.getMonth(), user.lastLoginDate.getDate()) : null;
+        
+        if (!lastLoginDate || today.getTime() !== lastLoginDate.getTime()) {
+            // New day login, reset counter and update lastLoginDate
+            user.dailyLoginCount = 1;
+            user.lastLoginDate = today;
+        } else {
+            // Same day login, increment counter
+            user.dailyLoginCount = (user.dailyLoginCount || 0) + 1;
+        }
+        
+        // Check daily login limit
+        const dailyLimit = user.dailyLoginLimit || 0;
+        if (dailyLimit > 0 && (user.dailyLoginCount || 0) > dailyLimit) {
+            return next(new ErrorHandler(`Daily login limit exceeded. You are limited to ${dailyLimit} login(s) per day.`, 403))
+        }
+        
         await (user as any).save({ validateModifiedOnly: true });
 
         const accessToken = (user as any).signAccessToken();
@@ -102,6 +122,31 @@ export const getAllUsers = CatchAsyncError(
         res.status(200).json({
             success: true,
             users,
+        })
+    }
+);
+
+// Update User Daily Login Limit
+export const updateUserLoginLimit = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { userId, dailyLoginLimit } = req.body;
+
+        if (dailyLoginLimit === undefined || dailyLoginLimit < 0) {
+            return next(new ErrorHandler("Please provide a valid daily login limit (0 for unlimited)", 400))
+        }
+
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+
+        user.dailyLoginLimit = dailyLoginLimit;
+        await user.save({ validateModifiedOnly: true });
+
+        res.status(200).json({
+            success: true,
+            message: `Daily login limit updated to ${dailyLoginLimit === 0 ? 'unlimited' : dailyLoginLimit + ' per day'}`,
+            user,
         })
     }
 );

@@ -59,6 +59,17 @@ const userSchema = new Schema<any, TUserModel, IUserMethods>({
     lastLoginAt: {
         type: Date,
     },
+    dailyLoginCount: {
+        type: Number,
+        default: 0,
+    },
+    lastLoginDate: {
+        type: Date,
+    },
+    dailyLoginLimit: {
+        type: Number,
+        default: 0, // 0 means unlimited
+    },
 }, { timestamps: true });
 
 userSchema.pre("save", async function (this: IUserDocument) {
